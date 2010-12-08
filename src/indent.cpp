@@ -768,11 +768,11 @@ void indent_text(void)
 
          if (frm.paren_count != 0)
          {
-            if ((frm.pse[frm.pse_tos - 1].type == CT_FPAREN_OPEN))
+            if (frm.pse[frm.pse_tos - 1].type == CT_FPAREN_OPEN && pc->parent_type == CT_FUNC_CALL)
             {
-               /* We are inside call_function( ... { ... }) -- dont do any extra indent */
+               /* We are inside function( call_function() { ... }) -- dont do any extra indent */
                frm.pse[frm.pse_tos].indent = frm.pse[frm.pse_tos - 1].indent_tmp;
-               indent_column_set(frm.pse[frm.pse_tos-2].indent_tmp);
+               indent_column_set(frm.pse[frm.pse_tos - 2].indent_tmp);
             }
             else
             {
