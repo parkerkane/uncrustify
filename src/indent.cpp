@@ -768,8 +768,17 @@ void indent_text(void)
 
          if (frm.paren_count != 0)
          {
-            /* We are inside ({ ... }) -- indent one tab from the paren */
-            frm.pse[frm.pse_tos].indent = frm.pse[frm.pse_tos - 1].indent_tmp + indent_size;
+            if ((frm.pse[frm.pse_tos - 1].type == CT_FPAREN_OPEN))
+            {
+               /* We are inside call_function( ... { ... }) -- dont do any extra indent */
+               frm.pse[frm.pse_tos].indent = frm.pse[frm.pse_tos - 1].indent_tmp;
+               indent_column_set(frm.pse[frm.pse_tos-2].indent_tmp);
+            }
+            else
+            {
+               /* We are inside ({ ... }) -- indent one tab from the paren */
+               frm.pse[frm.pse_tos].indent = frm.pse[frm.pse_tos - 1].indent_tmp + indent_size;
+            }
          }
          else
          {
